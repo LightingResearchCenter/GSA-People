@@ -1,14 +1,18 @@
-function session = gui_sessionselect
+function [plainSession,varargout] = gui_sessionselect
 %GUI_SESSIONSELECT GUI to select desired session
 %   Detailed explanation goes here
 
-choice = menu('Choose a project session',...
-    'Summer',...
-    'Winter');
+plainSessionArray   = {'summer','winter'};
+displaySessionArray = {'Summer','Winter'};
 
-sessionArray = {'summer','winter'};
+choice = menu('Choose a project session',displaySessionArray);
 
-session = sessionArray{choice};
+plainSession   = plainSessionArray{choice};
+displaySession = displaySessionArray{choice};
+
+if nargout == 2
+    varargout{1} = displaySession;
+end
 
 end
 

@@ -1,14 +1,18 @@
-function location = gui_locationselect
+function [plainLocation,varargout] = gui_locationselect
 %GUI_LOCATIONSELECT GUI to select the desired project
 %   Detailed explanation goes here
 
-choice = menu('Choose a project location',...
-    'Grand Junction, CO',...
-    'Portland, OR');
+plainLocationArray  = {'grandjunction','portland'};
+diplayLocationArray = {'Grand Junction, CO','Portland, OR'};
 
-locationArray = {'grandjunction','portland'};
+choice = menu('Choose a project location',diplayLocationArray);
 
-location = locationArray{choice};
+plainLocation   = plainLocationArray{choice};
+displayLocation = diplayLocationArray{choice};
+
+if nargout == 2
+    varargout{1} = displayLocation;
+end
 
 end
 
