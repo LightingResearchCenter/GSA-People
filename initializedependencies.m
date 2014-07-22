@@ -11,9 +11,10 @@ phasorPath      = fullfile(githubDir,'PhasorAnalysis');
 sleepPath       = fullfile(githubDir,'DaysimeterSleepAlgorithm');
 daysigramPath   = fullfile(githubDir,'DaysigramReport');
 lightHealthPath = fullfile(githubDir,'LHIReport');
+croppingPath    = fullfile(githubDir,'DaysimeterCropToolkit');
 
 % Enable repos
-addpath(cdfPath,phasorPath,sleepPath,daysigramPath,lightHealthPath);
+addpath(cdfPath,phasorPath,sleepPath,daysigramPath,lightHealthPath,croppingPath);
 
 end
 
