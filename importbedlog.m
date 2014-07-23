@@ -11,12 +11,12 @@ switch ext
         [~,~,bedLogCell] = xlsread(file);
         
         % Initialize the arrays
-        nIntervals = length(bedLogCell)-1;
+        nIntervals = size(bedLogCell,1)-1;
         bedTimeArray = zeros(nIntervals,1);
         riseTimeArray = zeros(nIntervals,1);
         
         % Load the data from the cell
-        for i1 = 1:length(bedTimeArray)
+        for i1 = 1:nIntervals
             bedTimeArray(i1) = datenum(bedLogCell{i1 + 1,2});
             riseTimeArray(i1) = datenum(bedLogCell{i1 + 1,3});
         end

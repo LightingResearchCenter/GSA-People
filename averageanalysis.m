@@ -27,7 +27,7 @@ tempCell3 = num2cell(tempMat2);
 param = cell2struct(tempCell3,varNames2,2);
 
 % Intervals averaged
-nIntervalsAveraged = length(tempMat);
+nIntervalsAveraged = size(tempMat,1);
 
 end
 
