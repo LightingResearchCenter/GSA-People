@@ -12,9 +12,10 @@ sleepPath       = fullfile(githubDir,'DaysimeterSleepAlgorithm');
 daysigramPath   = fullfile(githubDir,'DaysigramReport');
 lightHealthPath = fullfile(githubDir,'LHIReport');
 croppingPath    = fullfile(githubDir,'DaysimeterCropToolkit');
+dfaPath         = fullfile(githubDir,'DetrendedFluctuationAnalysis');
 
 % Enable repos
-addpath(cdfPath,phasorPath,sleepPath,daysigramPath,lightHealthPath,croppingPath);
+addpath(cdfPath,phasorPath,sleepPath,daysigramPath,lightHealthPath,croppingPath,dfaPath);
 
 end
 
