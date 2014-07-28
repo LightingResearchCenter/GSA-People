@@ -13,7 +13,11 @@ session  = gui_sessionselect;
 Paths = initializepaths(location,session);
 
 % Perform cropping
-cropping(Paths.originalData,Paths.editedData,Paths.logs);
+if strcmp(location,'grandjunction') && strcmp(session,'winter')
+    cropping(Paths.editedData,Paths.editedData,Paths.logs);
+else
+    cropping(Paths.originalData,Paths.editedData,Paths.logs);
+end
 
 end
 
