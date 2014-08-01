@@ -6,11 +6,13 @@ function Average = daysimeterworkaverages(csArray,illuminanceArray,activityArray
 Average = struct(...
     'cs'         , {[]},...
     'illuminance', {[]},...
+    'medianIlluminance', {[]},...
     'activity'   , {[]});
 
 % Average data
 Average.cs          = mean(csArray);
 Average.illuminance = logmean2(illuminanceArray);
+Average.medianIlluminance = logmedian(illuminanceArray);
 Average.activity    = mean(activityArray);
 
 end

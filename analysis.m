@@ -47,9 +47,11 @@ Output.logmeanNonzeroLux        = templateCell;
 Output.meanNonzeroActivity      = templateCell;
 Output.meanWorkdayCs            = templateCell;
 Output.logmeanWorkdayLux        = templateCell;
+Output.logmedianWorkdayLux      = templateCell;
 Output.meanWorkdayActivity      = templateCell;
 Output.meanPostWorkdayCs        = templateCell;
 Output.logmeanPostWorkdayLux    = templateCell;
+Output.logmedianPostWorkdayLux  = templateCell;
 Output.meanPostWorkdayActivity  = templateCell;
 
 
@@ -125,9 +127,11 @@ for i1 = 1:nFiles
     Output.meanNonzeroActivity{i1,1}    = Average.activity;
     Output.meanWorkdayCs{i1,1}          = WorkAverage.cs;
     Output.logmeanWorkdayLux{i1,1}      = WorkAverage.illuminance;
+    Output.logmedianWorkdayLux{i1,1}    = WorkAverage.medianIlluminance;
     Output.meanWorkdayActivity{i1,1}    = WorkAverage.activity;
     Output.meanPostWorkdayCs{i1,1}      = PostWorkAverage.cs;
     Output.logmeanPostWorkdayLux{i1,1}  = PostWorkAverage.illuminance;
+    Output.logmedianPostWorkdayLux{i1,1} = PostWorkAverage.medianIlluminance;
     Output.meanPostWorkdayActivity{i1,1}= PostWorkAverage.activity;
 end
 
