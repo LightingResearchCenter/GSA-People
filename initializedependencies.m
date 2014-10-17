@@ -5,7 +5,7 @@ function initializedependencies
 % Find full path to github directory
 [githubDir,~,~] = fileparts(pwd);
 
-% Contruct repo paths
+% Construct repo paths
 cdfPath         = fullfile(githubDir,'LRC-CDFtoolkit');
 phasorPath      = fullfile(githubDir,'PhasorAnalysis');
 sleepPath       = fullfile(githubDir,'DaysimeterSleepAlgorithm');

@@ -37,13 +37,13 @@ for i1 = 1:numel(cdfPathArray)
     Data.VariableAttributes.description{12,1} = 'bedArray';
     Data.VariableAttributes.description{12,2} = 'bed array, true = subject reported being in bed';
     Data.VariableAttributes.unitPrefix{12,1} = 'bedLog';
-    Data.VariableAttributes.unitPrefix{12,2} = '';
+    Data.VariableAttributes.unitPrefix{12,2} = ' ';
     Data.VariableAttributes.baseUnit{12,1} = 'bedLog';
     Data.VariableAttributes.baseUnit{12,2} = '1';
     Data.VariableAttributes.unitType{12,1} = 'bedArray';
     Data.VariableAttributes.unitType{12,2} = 'logical';
     Data.VariableAttributes.otherAttributes{12,1} = 'bedArray';
-    Data.VariableAttributes.otherAttributes{12,2} = '';
+    Data.VariableAttributes.otherAttributes{12,2} = ' ';
     
     % Rewrite file
     delete(cdfPathArray{i1});
