@@ -9,9 +9,9 @@ Average = struct(...
     'activity'   , {[]});
 
 % Average data
-Average.cs          = nonzeromean(csArray);
-Average.illuminance = logmean(illuminanceArray);
-Average.activity    = nonzeromean(activityArray);
+Average.cs          = centraltendency(csArray);
+Average.illuminance = centraltendency(illuminanceArray);
+Average.activity    = centraltendency(activityArray);
 
 end
 

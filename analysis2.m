@@ -40,18 +40,26 @@ Output.phasorMagnitude       = templateCell;
 Output.phasorAngleHrs        = templateCell;
 Output.interdailyStability   = templateCell;
 Output.intradailyVariability = templateCell;
-%   averages
-Output.meanNonzeroCs            = templateCell;
-Output.logmeanNonzeroLux        = templateCell;
-Output.meanNonzeroActivity      = templateCell;
-Output.meanWorkdayCs            = templateCell;
-Output.logmeanWorkdayLux        = templateCell;
-Output.logmedianWorkdayLux      = templateCell;
-Output.meanWorkdayActivity      = templateCell;
-Output.meanPostWorkdayCs        = templateCell;
-Output.logmeanPostWorkdayLux    = templateCell;
-Output.logmedianPostWorkdayLux  = templateCell;
-Output.meanPostWorkdayActivity  = templateCell;
+%   averages (CS)
+Output.arithmeticMeanNonZeroCs     = templateCell;
+Output.arithmeticMeanWorkdayCs     = templateCell;
+Output.arithmeticMeanPostWorkdayCs = templateCell;
+%   averages (Lux)
+Output.arithmeticMeanNonZeroLux     = templateCell;
+Output.geometricMeanNonZeroLux      = templateCell;
+Output.medianNonZeroLux             = templateCell;
+
+Output.arithmeticMeanWorkdayLux     = templateCell;
+Output.geometricMeanWorkdayLux      = templateCell;
+Output.medianWorkdayLux             = templateCell;
+
+Output.arithmeticMeanPostWorkdayLux = templateCell;
+Output.geometricMeanPostWorkdayLux  = templateCell;
+Output.medianPostWorkdayLux         = templateCell;
+%   averages (Activity)
+Output.arithmeticMeanNonZeroActivity     = templateCell;
+Output.arithmeticMeanWorkdayActivity     = templateCell;
+Output.arithmeticMeanPostWorkdayActivity = templateCell;
 
 
 for i1 = 1:nFiles
@@ -120,18 +128,26 @@ for i1 = 1:nFiles
     Output.interdailyStability{i1,1}    = Phasor.interdailyStability;
     Output.intradailyVariability{i1,1}  = Phasor.intradailyVariability;
 
-    %   averages
-    Output.meanNonzeroCs{i1,1}          = Average.cs;
-    Output.logmeanNonzeroLux{i1,1}      = Average.illuminance;
-    Output.meanNonzeroActivity{i1,1}    = Average.activity;
-    Output.meanWorkdayCs{i1,1}          = WorkAverage.cs;
-    Output.logmeanWorkdayLux{i1,1}      = WorkAverage.illuminance;
-    Output.logmedianWorkdayLux{i1,1}    = WorkAverage.medianIlluminance;
-    Output.meanWorkdayActivity{i1,1}    = WorkAverage.activity;
-    Output.meanPostWorkdayCs{i1,1}      = PostWorkAverage.cs;
-    Output.logmeanPostWorkdayLux{i1,1}  = PostWorkAverage.illuminance;
-    Output.logmedianPostWorkdayLux{i1,1} = PostWorkAverage.medianIlluminance;
-    Output.meanPostWorkdayActivity{i1,1}= PostWorkAverage.activity;
+    %   averages (CS)
+    Output.arithmeticMeanNonZeroCs{i1,1}     = Average.cs.arithmeticMean;
+    Output.arithmeticMeanWorkdayCs{i1,1}     = WorkAverage.cs.arithmeticMean;
+    Output.arithmeticMeanPostWorkdayCs{i1,1} = PostWorkAverage.cs.arithmeticMean;
+    %   averages (Lux)
+    Output.arithmeticMeanNonZeroLux{i1,1}     = Average.illuminance.arithmeticMean;
+    Output.geometricMeanNonZeroLux{i1,1}      = Average.illuminance.geometricMean;
+    Output.medianNonZeroLux{i1,1}             = Average.illuminance.median;
+
+    Output.arithmeticMeanWorkdayLux{i1,1}     = WorkAverage.illuminance.arithmeticMean;
+    Output.geometricMeanWorkdayLux{i1,1}      = WorkAverage.illuminance.geometricMean;
+    Output.medianWorkdayLux{i1,1}             = WorkAverage.illuminance.median;
+
+    Output.arithmeticMeanPostWorkdayLux{i1,1} = PostWorkAverage.illuminance.arithmeticMean;
+    Output.geometricMeanPostWorkdayLux{i1,1}  = PostWorkAverage.illuminance.geometricMean;
+    Output.medianPostWorkdayLux{i1,1}         = PostWorkAverage.illuminance.median;
+    %   averages (Activity)
+    Output.arithmeticMeanNonZeroActivity{i1,1}     = Average.activity.arithmeticMean;
+    Output.arithmeticMeanWorkdayActivity{i1,1}     = WorkAverage.activity.arithmeticMean;
+    Output.arithmeticMeanPostWorkdayActivity{i1,1} = PostWorkAverage.activity.arithmeticMean;
 end
 
 close all
@@ -219,10 +235,10 @@ illuminanceArray(~validIdx) = [];
 
 [workIdx,postWorkIdx] = createworkday(timeArray,bedTimeArray);
 
-Average = daysimeteraverages(csArray,illuminanceArray,activityArray);
-WorkAverage = daysimeterworkaverages(csArray(workIdx),...
+Average = daysimeteraverages(csArray(csArray>0.01),illuminanceArray(illuminanceArray>0.01),activityArray(activityArray>0.01));
+WorkAverage = daysimeteraverages(csArray(workIdx),...
     illuminanceArray(workIdx),activityArray(workIdx));
-PostWorkAverage = daysimeterworkaverages(csArray(postWorkIdx),...
+PostWorkAverage = daysimeteraverages(csArray(postWorkIdx),...
     illuminanceArray(postWorkIdx),activityArray(postWorkIdx));
 
 end
