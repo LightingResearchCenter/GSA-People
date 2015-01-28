@@ -4,6 +4,10 @@ function analysis2
 % Enable dependecies
 initializedependencies;
 
+[githubDir,~,~] = fileparts(pwd);
+circadianDir = fullfile(githubDir,'circadian');
+addpath(circadianDir);
+
 % Have user select project location and session
 [plainLocation,displayLocation] = gui_locationselect;
 [plainSession ,displaySession ] = gui_sessionselect ;
@@ -64,18 +68,27 @@ Output.arithmeticMeanPostWorkdayActivity = templateCell;
 
 for i1 = 1:nFiles
     % Import data
-    Data = ProcessCDF(cdfPathArray{i1});
-    subject = Data.GlobalAttributes.subjectID{1};
-    logicalArray = logical(Data.Variables.logicalArray);
-    complianceArray = logical(Data.Variables.complianceArray(logicalArray));
-    bedArray = logical(Data.Variables.bedArray(logicalArray));
-    timeArray = Data.Variables.time(logicalArray);
-    activityArray = Data.Variables.activity(logicalArray);
-    csArray = Data.Variables.CS(logicalArray);
-    illuminanceArray = Data.Variables.illuminance(logicalArray);
+    cdfData = daysimeter12.readcdf(cdfPathArray{i1});
+    [absTime,relTime,epoch,light,activity,masks,subjectID,deviceSN] = daysimeter12.convertcdf(cdfData);
+    
+    logicalArray = masks.observation;
+    complianceArray = masks.compliance(logicalArray);
+    bedArray = masks.bed(logicalArray);
+    timeArray = absTime.localDateNum(logicalArray);
+    activityArray = activity(logicalArray);
+    csArray = light.cs(logicalArray);
+    illuminanceArray = light.illuminance(logicalArray);
+    
+    startTime = min(timeArray);
+    stopTime = max(timeArray);
+    idx = absTime.localDateNum > floor(startTime) & absTime.localDateNum < ceil(stopTime);
+    masks2 = masks;
+    masks2.observation = masks2.observation(idx);
+    masks2.compliance = masks2.compliance(idx);
+    masks2.bed = masks2.bed(idx);
     
     % Set subject
-    Output.subject{i1,1} = subject;
+    Output.subject{i1,1} = subjectID;
     
     % Check useable data
     if numel(timeArray(complianceArray)) < 24
@@ -83,19 +96,18 @@ for i1 = 1:nFiles
     end
     
     % Match and import bed log
-    bedIdx = bedSubject == str2double(subject);
+    bedIdx = bedSubject == str2double(subjectID);
     [bedTimeArray,riseTimeArray] = importbedlog(bedLogPathArray{bedIdx});
     
     % Daysigram
-    sheetTitle = ['GSA - ',displayLocation,' - ',displaySession,' - Subject ',subject];
-    daysigramFileID = ['subject',subject];
-    generatedaysigram(sheetTitle,timeArray(complianceArray),...
-        activityArray(complianceArray),csArray(complianceArray),...
-        'cs',[0,1],8,Paths.plots,daysigramFileID)
+    sheetTitle = ['GSA - ',displayLocation,' - ',displaySession,' - Subject ',subjectID];
+    daysigramFileID = ['subject',subjectID];
+%     reports.daysigram.daysigram(2,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.cs(idx),'cs',[0,1],8,Paths.plots,[daysigramFileID,'_CS']);
+    reports.daysigram.daysigram(3,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.illuminance(idx),'lux',[1,10^5],8,Paths.plots,[daysigramFileID,'_Lux']);
     
     % Light and Health Report/ Phasor Analysis
     figTitle = ['GSA - ',displayLocation,' - ',displaySession];
-    Phasor = phasorprep(subject,figTitle,hFigure,units,Paths,...
+    Phasor = phasorprep(subjectID,figTitle,hFigure,units,Paths,...
         complianceArray,bedArray,timeArray,csArray,activityArray,...
         illuminanceArray);
     

@@ -9,13 +9,13 @@ function initializedependencies
 cdfPath         = fullfile(githubDir,'LRC-CDFtoolkit');
 phasorPath      = fullfile(githubDir,'PhasorAnalysis');
 sleepPath       = fullfile(githubDir,'DaysimeterSleepAlgorithm');
-daysigramPath   = fullfile(githubDir,'DaysigramReport');
+% daysigramPath   = fullfile(githubDir,'DaysigramReport');
 lightHealthPath = fullfile(githubDir,'LHIReport');
 croppingPath    = fullfile(githubDir,'DaysimeterCropToolkit');
 dfaPath         = fullfile(githubDir,'DetrendedFluctuationAnalysis');
 
 % Enable repos
-addpath(cdfPath,phasorPath,sleepPath,daysigramPath,lightHealthPath,croppingPath,dfaPath);
+addpath(cdfPath,phasorPath,sleepPath,lightHealthPath,croppingPath,dfaPath);
 
 end
 
