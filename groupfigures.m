@@ -7,17 +7,18 @@ runtime = datestr(now,'yyyy-mm-dd_HHMM');
 initializedependencies;
 
 % Have user select project location and session
-[plainLocation,displayLocation] = gui_locationselect;
+% [plainLocation,displayLocation] = gui_locationselect;
 
-% plainSeasonCell = {'summer','winter'};
-% displaySeasonCell = {'Summer','Winter'};
-plainSeasonCell = {'summer'};
-displaySeasonCell = {'Summer'};
+
+plainSeasonCell = {'summer','winter'};
+displaySeasonCell = {'Summer','Winter'};
+% plainSeasonCell = {'summer'};
+% displaySeasonCell = {'Summer'};
 
 xTicks = [0,6/24,12/24,18/24,24/24];
 yTicks = 0:.1:.7;
 
-invalidSubjectArray = [6,9,16,20,25];
+validSubjectArray = [1, 2, 4, 5, 7, 11, 13, 15, 17, 18, 19, 23, 24, 27, 29];
 
 for i0 = 1:numel(plainSeasonCell)
     % Construct project paths
@@ -41,7 +42,7 @@ for i0 = 1:numel(plainSeasonCell)
         
         subject = str2double(Data.GlobalAttributes.subjectID{1});
         
-        if any(subject == invalidSubjectArray);
+        if any(subject ~= validSubjectArray);
             continue;
         end
         
