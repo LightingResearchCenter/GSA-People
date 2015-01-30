@@ -79,14 +79,6 @@ for i1 = 1:nFiles
     csArray = light.cs(logicalArray);
     illuminanceArray = light.illuminance(logicalArray);
     
-    startTime = min(timeArray);
-    stopTime = max(timeArray);
-    idx = absTime.localDateNum > floor(startTime) & absTime.localDateNum < ceil(stopTime);
-    masks2 = masks;
-    masks2.observation = masks2.observation(idx);
-    masks2.compliance = masks2.compliance(idx);
-    masks2.bed = masks2.bed(idx);
-    
     % Set subject
     Output.subject{i1,1} = subjectID;
     
@@ -95,6 +87,14 @@ for i1 = 1:nFiles
         continue
     end
     
+    startTime = min(timeArray);
+    stopTime = max(timeArray);
+    idx = absTime.localDateNum > floor(startTime(1)) & absTime.localDateNum < ceil(stopTime(1));
+    masks2 = masks;
+    masks2.observation = masks2.observation(idx);
+    masks2.compliance = masks2.compliance(idx);
+    masks2.bed = masks2.bed(idx);
+    
     % Match and import bed log
     bedIdx = bedSubject == str2double(subjectID);
     [bedTimeArray,riseTimeArray] = importbedlog(bedLogPathArray{bedIdx});
@@ -102,8 +102,8 @@ for i1 = 1:nFiles
     % Daysigram
     sheetTitle = ['GSA - ',displayLocation,' - ',displaySession,' - Subject ',subjectID];
     daysigramFileID = ['subject',subjectID];
-%     reports.daysigram.daysigram(2,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.cs(idx),'cs',[0,1],8,Paths.plots,[daysigramFileID,'_CS']);
-    reports.daysigram.daysigram(3,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.illuminance(idx),'lux',[1,10^5],8,Paths.plots,[daysigramFileID,'_Lux']);
+    reports.daysigram.daysigram(2,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.cs(idx),'cs',[0,1],8,Paths.plots,[daysigramFileID,'_CS']);
+%     reports.daysigram.daysigram(3,sheetTitle,absTime.localDateNum(idx),masks2,activity(idx),light.illuminance(idx),'lux',[1,10^5],8,Paths.plots,[daysigramFileID,'_Lux']);
     
     % Light and Health Report/ Phasor Analysis
     figTitle = ['GSA - ',displayLocation,' - ',displaySession];
