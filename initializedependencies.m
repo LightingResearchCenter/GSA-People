@@ -6,6 +6,7 @@ function initializedependencies
 [githubDir,~,~] = fileparts(pwd);
 
 % Construct repo paths
+circadianPath   = fullfile(githubDir,'circadian');
 cdfPath         = fullfile(githubDir,'LRC-CDFtoolkit');
 phasorPath      = fullfile(githubDir,'PhasorAnalysis');
 sleepPath       = fullfile(githubDir,'DaysimeterSleepAlgorithm');
@@ -15,7 +16,7 @@ croppingPath    = fullfile(githubDir,'DaysimeterCropToolkit');
 dfaPath         = fullfile(githubDir,'DetrendedFluctuationAnalysis');
 
 % Enable repos
-addpath(cdfPath,phasorPath,sleepPath,lightHealthPath,croppingPath,dfaPath);
+addpath(circadianPath,cdfPath,phasorPath,sleepPath,lightHealthPath,croppingPath,dfaPath);
 
 end
 

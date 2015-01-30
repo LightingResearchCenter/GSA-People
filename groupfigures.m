@@ -5,10 +5,12 @@ runtime = datestr(now,'yyyy-mm-dd_HHMM');
 
 % Enable dependecies
 initializedependencies;
+import daysimeter12.*
 
 % Have user select project location and session
 % [plainLocation,displayLocation] = gui_locationselect;
-
+plainLocation = 'portland';
+displayLocation = 'Portland, OR';
 
 plainSeasonCell = {'summer','winter'};
 displaySeasonCell = {'Summer','Winter'};
@@ -38,20 +40,22 @@ for i0 = 1:numel(plainSeasonCell)
 
     for i1 = 1:nFiles
         % Import data
-        Data = ProcessCDF(cdfPathArray{i1});
+        cdfData = daysimeter12.readcdf(cdfPathArray{i1});
+        [absTime,relTime,epoch,light,activity,masks,subjectID,deviceSN] = daysimeter12.convertcdf(cdfData);
+
+        logicalArray = masks.observation;
+        complianceArray = masks.compliance(logicalArray);
+        bedArray = masks.bed(logicalArray);
+        timeArray = absTime.localDateNum(logicalArray);
+        activityArray = activity(logicalArray);
+        csArray = light.cs(logicalArray);
+        illuminanceArray = light.illuminance(logicalArray);
         
-        subject = str2double(Data.GlobalAttributes.subjectID{1});
+        subjectNum = str2double(subjectID);
         
-        if any(subject ~= validSubjectArray);
+        if ~any(subjectNum == validSubjectArray);
             continue;
         end
-        
-        logicalArray = logical(Data.Variables.logicalArray);
-        complianceArray = logical(Data.Variables.complianceArray(logicalArray));
-        bedArray = logical(Data.Variables.bedArray(logicalArray));
-        timeArray = Data.Variables.time(logicalArray);
-        activityArray = Data.Variables.activity(logicalArray);
-        csArray = Data.Variables.CS(logicalArray);
         
         % Check for useable data
         if numel(timeArray(complianceArray)) < 24
