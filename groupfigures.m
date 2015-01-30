@@ -49,7 +49,6 @@ for i0 = 1:numel(plainSeasonCell)
         timeArray = absTime.localDateNum(logicalArray);
         activityArray = activity(logicalArray);
         csArray = light.cs(logicalArray);
-        illuminanceArray = light.illuminance(logicalArray);
         
         subjectNum = str2double(subjectID);
         
@@ -57,11 +56,21 @@ for i0 = 1:numel(plainSeasonCell)
             continue;
         end
         
+        
+        wkendIdx = createweekend(timeArray);
+        
+        complianceArray = complianceArray(~wkendIdx);
+        bedArray = bedArray(~wkendIdx);
+        timeArray = timeArray(~wkendIdx);
+        activityArray = activityArray(~wkendIdx);
+        csArray = csArray(~wkendIdx);
+        
         % Check for useable data
         if numel(timeArray(complianceArray)) < 24
             continue
         end
-
+        
+        
         % Phasor Analysis
         [phasorMagnitude(i1),phasorAngleHrs(i1)] = phasorprep(...
             complianceArray,bedArray,timeArray,csArray,activityArray);
@@ -99,7 +108,7 @@ for i0 = 1:numel(plainSeasonCell)
     title([displaySeasonCell{i0},': ',nSubjects,' Subjects']);
     hold off
     
-    millerPath = fullfile(Paths.plots,['combinedMiller_',runtime,'_GSA_',plainLocation,'-people',plainSeasonCell{i0},'.pdf']);
+    millerPath = fullfile(Paths.plots,['combinedMiller_',runtime,'_GSA_',plainLocation,'-people',plainSeasonCell{i0},'_sansWeekend.pdf']);
     print(gcf,'-dpdf',millerPath,'-painters');
     clf
     
@@ -108,7 +117,7 @@ for i0 = 1:numel(plainSeasonCell)
     title([displaySeasonCell{i0},': ',nSubjects,' Subjects']);
     hold off
     
-    compassPath = fullfile(Paths.plots,['combinedCompass_',runtime,'_GSA_',plainLocation,'-people',plainSeasonCell{i0},'.pdf']);
+    compassPath = fullfile(Paths.plots,['combinedCompass_',runtime,'_GSA_',plainLocation,'-people',plainSeasonCell{i0},'_sansWeekend.pdf']);
     print(gcf,'-dpdf',compassPath,'-painters');
     clf
 end
@@ -134,5 +143,13 @@ activityArray(~complianceArray) = [];
 Phasor = phasoranalysis(timeArray,csArray,activityArray);
 phasorMagnitude	= Phasor.magnitude;
 phasorAngleHrs  = Phasor.angleHrs;
+
+end
+
+function wkendIdx = createweekend(timeArray)
+
+dayArray        = floor(timeArray);
+dayOfWeekArray	= weekday(dayArray); % Sunday = 1, Monday = 2, etc.
+wkendIdx        = dayOfWeekArray == 1 | dayOfWeekArray == 7;
 
 end
